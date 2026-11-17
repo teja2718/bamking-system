@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Multiple Students Marks Calculator</title>
+</head>
+<body>
+
+<h2>Student Marks Calculator</h2>
+
+<h3>Enter Student Details</h3>
+
+Name: <input type="text" id="name"><br><br>
+Roll Number: <input type="text" id="roll"><br><br>
+
+<h3>Enter Subject Marks</h3>
+
+<input type="text" id="sub1" placeholder="Subject 1 Name">
+<input type="text" id="m1" placeholder="Marks / Absent"><br><br>
+
+<input type="text" id="sub2" placeholder="Subject 2 Name">
+<input type="text" id="m2" placeholder="Marks / Absent"><br><br>
+
+<input type="text" id="sub3" placeholder="Subject 3 Name">
+<input type="text" id="m3" placeholder="Marks / Absent"><br><br>
+
+<input type="text" id="sub4" placeholder="Subject 4 Name">
+<input type="text" id="m4" placeholder="Marks / Absent"><br><br>
+
+<input type="text" id="sub5" placeholder="Subject 5 Name">
+<input type="text" id="m5" placeholder="Marks / Absent"><br><br>
+
+<input type="text" id="sub6" placeholder="Subject 6 Name">
+<input type="text" id="m6" placeholder="Marks / Absent"><br><br>
+
+<button onclick="calculate()">Add Student</button>
+
+<h2>Student Results</h2>
+
+<table border="1" cellpadding="8">
+<thead>
+<tr>
+<th>Name</th>
+<th>Roll No</th>
+<th>Total</th>
+<th>Percentage</th>
+<th>Grade</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody id="results"></tbody>
+</table>
+
+<script>
+function calculate() {
+    let name = document.getElementById("name").value.trim();
+    let roll = document.getElementById("roll").value.trim();
+
+    if (!/^[a-zA-Z ]+$/.test(name) ||
+        !/^[a-zA-Z0-9]+$/.test(roll)) {
+        alert("Enter valid name and roll number");
+        return;
+    }
+
+    let total = 0;
+    let failed = false;
+    let subjects = "";
+
+    for (let i = 1; i <= 6; i++) {
+        let subject = document.getElementById("sub" + i).value.trim();
+        let value = document.getElementById("m" + i).value.trim();
+
+        if (!subject || !value) {
+            alert("Enter all subject names and marks");
+            return;
+        }
+
+        if (value.toLowerCase() === "absent") {
+            failed = true;
+            subjects += subject + ": Absent<br>";
+        } else {
+            let mark = Number(value);
+
+            if (isNaN(mark) || mark < 0 || mark > 100) {
+                alert("Enter marks between 0 and 100 or Absent");
+                return;
+            }
+
+            total += mark;
+
+            if (mark < 35) failed = true;
+
+            subjects += subject + ": " + mark + "<br>";
+        }
+    }
+
+    let percentage = total / 6;
+    let result = failed ? "FAIL" : "PASS";
+
+    let grade = failed ? "F" :
+        percentage >= 90 ? "A+" :
+        percentage >= 75 ? "A" :
+        percentage >= 60 ? "B" :
+        percentage >= 50 ? "C" : "D";
+
+    let row = document.createElement("tr");
+
+    row.innerHTML = `
+        <td>${name}</td>
+        <td>${roll}</td>
+        <td>${total}/600</td>
+        <td>${percentage.toFixed(2)}%</td>
+        <td>${grade}</td>
+        <td>${result}</td>
+    `;
+
+    document.getElementById("results").appendChild(row);
+
+    document.getElementById("name").value = "";
+    document.getElementById("roll").value = "";
+
+    for (let i = 1; i <= 6; i++) {
+        document.getElementById("m" + i).value = "";
+    }
+}
+</script>
+
+</body>
+</html>

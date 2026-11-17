@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Student Marks Calculator</title>
+</head>
+<body>
+<h2>Student Marks Calculator</h2>
+
+<p>Name: Tejodhar</p>
+<p>Roll No: 24JNA33110</p>
+
+<input type="number" id="m1" placeholder="Subject 1 Marks"><br><br>
+<input type="number" id="m2" placeholder="Subject 2 Marks"><br><br>
+<input type="number" id="m3" placeholder="Subject 3 Marks"><br><br>
+<input type="number" id="m4" placeholder="Subject 4 Marks"><br><br>
+<input type="number" id="m5" placeholder="Subject 5 Marks"><br><br>
+
+<button onclick="calculate()">Calculate</button>
+
+<h3 id="result"></h3>
+
+<script>
+function calculate() {
+    let marks = [
+        +document.getElementById("m1").value,
+        +document.getElementById("m2").value,
+        +document.getElementById("m3").value,
+        +document.getElementById("m4").value,
+        +document.getElementById("m5").value
+    ];
+
+    if (marks.some(m => m < 0 || m > 100)) {
+        alert("Enter marks between 0 and 100");
+        return;
+    }
+
+    let total = marks.reduce((a,b) => a+b, 0);
+    let percentage = total / 5;
+    let grade = percentage >= 90 ? "A+" :
+                percentage >= 75 ? "A" :
+                percentage >= 60 ? "B" :
+                percentage >= 50 ? "C" :
+                percentage >= 35 ? "D" : "F";
+
+    let status = marks.every(m => m >= 35) ? "PASS" : "FAIL";
+
+    document.getElementById("result").innerHTML =
+        "Total Marks: " + total + "/500<br>" +
+        "Percentage: " + percentage.toFixed(2) + "%<br>" +
+        "Grade: " + grade + "<br>" +
+        "Result: " + status;
+}
+</script>
+</body>
+</html>
